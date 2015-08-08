@@ -4,6 +4,7 @@ require "httpclient"
 require "json"
 
 module Netki
+  SUPPORTED_CURRENCIES = ['btc','ltc','dgc','oap','nmc','tusd','teur','tjpy','fct','fec']
 
   # Request Utility Functionality
   def self.process_request(api_key, partner_id, uri, method, bodyData=nil)
@@ -13,8 +14,8 @@ module Netki
     # Setup Headers
     headers = {}
     headers["Content-Type"] = "application/json"
-    headers["Authorization"] = api_key
-    headers["X-Partner-ID"] = partner_id
+    headers["Authorization"] = api_key if api_key
+    headers["X-Partner-ID"] = partner_id if partner_id
 
     # Setup Request Options
     opts = {}
@@ -55,6 +56,22 @@ module Netki
     end
 
     return ret_data
+  end
+
+  # Obtain a WalletName object by querying the Netki Open API.
+  def self.wallet_lookup(uri, currency, api_url='https://api.netki.com')
+    raise "Invalid currency: #{currency}" unless SUPPORTED_CURRENCIES.include? currency.downcase
+
+    wallet_name = URI.parse(uri).host || uri.to_s
+
+    response = process_request(
+      nil, nil, "#{api_url}/api/wallet_lookup/#{wallet_name}/#{currency.downcase}", 'GET')
+
+    domain_parts = response['wallet_name'].split('.')
+    wallet_name = domain_parts.shift
+
+    WalletName.new(domain_parts.join('.'), wallet_name,
+                   { response['currency'] => response['wallet_address'] })
   end
 
 ##
