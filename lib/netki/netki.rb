@@ -60,13 +60,15 @@ module Netki
 
   # Obtain a WalletName object by querying the Netki Open API.
   def self.wallet_lookup(uri, currency, api_url='https://api.netki.com')
-    raise "Invalid currency: #{currency}" unless SUPPORTED_CURRENCIES.include? currency.downcase
+    raise "Invalid currency: #{currency}" unless SUPPORTED_CURRENCIES.include?(
+                                                   currency.downcase)
 
     wallet_name = URI.parse(uri).host || uri.to_s
 
-    response = process_request(
-      nil, nil, "#{api_url}/api/wallet_lookup/#{wallet_name}/#{currency.downcase}", 'GET')
+    response = process_request(nil, nil,
+      "#{api_url}/api/wallet_lookup/#{wallet_name}/#{currency.downcase}", 'GET')
 
+    puts response
     domain_parts = response['wallet_name'].split('.')
     wallet_name = domain_parts.shift
 
