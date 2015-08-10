@@ -149,7 +149,7 @@ module Netki
           domain_name: @domain_name,
           name: @name,
           wallets: wallet_data,
-          external_id: @external_id
+          external_id: @external_id || 'null'
       }
 
       wn_api_data = {}
