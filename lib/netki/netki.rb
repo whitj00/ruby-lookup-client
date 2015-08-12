@@ -5,9 +5,6 @@ require 'json'
 require_relative 'utilities'
 
 module Netki
-  SUPPORTED_CURRENCIES = [
-    'btc','ltc','dgc','oap','nmc','tusd','teur','tjpy','fct','fec'
-  ]
 
   # Request Utility Functionality
   def self.process_request(api_key, partner_id, uri, method, bodyData=nil)
@@ -63,9 +60,6 @@ module Netki
 
   # Obtain a WalletName object by querying the Netki Open API.
   def self.wallet_lookup(uri, currency, api_url='https://api.netki.com')
-    raise "Invalid currency: #{currency}" unless SUPPORTED_CURRENCIES.include?(
-                                                   currency.downcase)
-
     wallet_name = URI.parse(uri).host || uri.to_s
 
     response = process_request(nil, nil,
