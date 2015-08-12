@@ -1,10 +1,13 @@
-require "rubygems"
-require "bundler/setup"
-require "httpclient"
-require "json"
+require 'rubygems'
+require 'bundler/setup'
+require 'httpclient'
+require 'json'
+require_relative 'utilities'
 
 module Netki
-  SUPPORTED_CURRENCIES = ['btc','ltc','dgc','oap','nmc','tusd','teur','tjpy','fct','fec']
+  SUPPORTED_CURRENCIES = [
+    'btc','ltc','dgc','oap','nmc','tusd','teur','tjpy','fct','fec'
+  ]
 
   # Request Utility Functionality
   def self.process_request(api_key, partner_id, uri, method, bodyData=nil)
@@ -68,12 +71,19 @@ module Netki
     response = process_request(nil, nil,
       "#{api_url}/api/wallet_lookup/#{wallet_name}/#{currency.downcase}", 'GET')
 
-    puts response
     domain_parts = response['wallet_name'].split('.')
     wallet_name = domain_parts.shift
 
-    WalletName.new(domain_parts.join('.'), wallet_name,
-                   { response['currency'] => response['wallet_address'] })
+    parsed = begin
+               parse_bitcoin_uri(response['wallet_address']).merge(
+                 {_raw: response['wallet_address']})
+             rescue InvalidURIError => e
+               response['wallet_address']
+             end
+    WalletName.new(
+      domain_parts.join('.'), wallet_name,
+      { response['currency'] => parsed }
+    )
   end
 
 ##
@@ -82,30 +92,26 @@ module Netki
   class WalletName
 
     ##
-    # :args: domain_name, name, wallets, external_id, id
-    def initialize(domain_name, name, wallets={}, external_id=nil, id=nil) #:nodoc:
-      @id = id
+    # :args: domain_name, name, wallets, external_id, id,
+    def initialize(domain_name, name, wallets={}, external_id: nil, id: nil)
       @domain_name = domain_name
       @name = name
-      @wallets = wallets
+
+      @wallets = wallets.inject({}) do |hsh, (currency, value)|
+        hsh[currency] = value.is_a?(Hash) ? value : { address: value }
+        hsh
+      end
       @external_id = external_id
+      @id = id
     end
 
-    attr_reader :id
-    attr_reader :domain_name
-    attr_reader :name
-    attr_reader :external_id
-
-    attr_writer :id
-    attr_writer :domain_name
-    attr_writer :name
-    attr_writer :external_id
+    attr_accessor :domain_name, :name, :id, :external_id
 
     # :section: Getters
 
     # Get Address for Existing Currency
     def get_address(currency)
-      @wallets[currency]
+      @wallets[currency][:address]
     end
 
     # Get Wallet Name Array of Used Currencies
@@ -117,7 +123,7 @@ module Netki
 
     # Set the address or URI for the given currency for this wallet name
     def set_currency_address(currency, address)
-      @wallets[currency] = address
+      @wallets[currency][:address] = address
     end
 
     # Remove a used currency from this wallet name
@@ -138,18 +144,21 @@ module Netki
     # Save the currency WalletName object to the remote service
     def save
       wallet_data = []
-      @wallets.each do |currency, wallet_address|
-        wallet_data.push({
-                             currency: currency,
-                             wallet_address: wallet_address
-                         })
+      @wallets.each do |currency, wallet|
+        # NOTE: Unsure if remote service supports storing metadata (params/bip70 req)?
+        wallet_data.push(
+          {
+            currency: currency,
+            wallet_address: wallet[:_raw] ? wallet[:_raw] : wallet[:address]
+          }
+        )
       end
 
       wn_data = {
-          domain_name: @domain_name,
-          name: @name,
-          wallets: wallet_data,
-          external_id: @external_id || 'null'
+        domain_name: @domain_name,
+        name: @name,
+        wallets: wallet_data,
+        external_id: @external_id || 'null'
       }
 
       wn_api_data = {}
@@ -305,7 +314,10 @@ module Netki
     # Create a new Wallet Name object using this factory method.
     # * domain_name -> The pre-configured domain name you would like to add this new wallet name to
     # * name -> The DNS name that you would like this new wallet name to have (ie.. name.domain_name)
-    # * wallets -> This is a hash where the key is the currency (ie.. btc, ltc, dgc, tusd) and the value is the wallet address or URL of the BIP32 / BIP70 address server
+    # * wallets -> This is a hash where the key is the currency (ie.. btc, ltc, dgc, tusd) and the value is:
+    #              the wallet address OR
+    #              URL of the BIP32 / BIP70 address server OR
+    #              a hash containing an :address and other metadata
     # * external_id -> Any unique external ID that you may want to use to track this specific wallet name
     #
     def create_new_walletname(domain_name, name, wallets={}, external_id=nil)
