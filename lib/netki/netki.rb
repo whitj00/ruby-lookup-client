@@ -198,13 +198,7 @@ module Netki
     # * API Key -> Netki API Key is available only upon API Key creation. Be sure to store it somewhere safe!
     #
 
-    attr_reader :partner_id
-    attr_reader :api_key
-    attr_reader :api_url
-
-    attr_writer :partner_id
-    attr_writer :api_key
-    attr_writer :api_url
+    attr_accessor :partner_id, :api_key, :api_url
 
     def initialize(partner_id=nil, api_key=nil, api_url='https://api.netki.com')
       @partner_id = partner_id
