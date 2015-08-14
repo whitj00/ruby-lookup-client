@@ -198,13 +198,7 @@ module Netki
     # * API Key -> Netki API Key is available only upon API Key creation. Be sure to store it somewhere safe!
     #
 
-    attr_reader :partner_id
-    attr_reader :api_key
-    attr_reader :api_url
-
-    attr_writer :partner_id
-    attr_writer :api_key
-    attr_writer :api_url
+    attr_accessor :partner_id, :api_key, :api_url
 
     def initialize(partner_id=nil, api_key=nil, api_url='https://api.netki.com')
       @partner_id = partner_id
@@ -315,7 +309,7 @@ module Netki
     # * external_id -> Any unique external ID that you may want to use to track this specific wallet name
     #
     def create_new_walletname(domain_name, name, wallets={}, external_id=nil)
-      new_wn = WalletName.new(domain_name, name, wallets, external_id)
+      new_wn = WalletName.new(domain_name, name, wallets, external_id: external_id)
       new_wn.set_api_opts(@api_url, @partner_id, @api_key)
       new_wn
     end
@@ -341,7 +335,7 @@ module Netki
         wn['wallets'].each do |wallet|
           wallets[wallet['currency']] = wallet['wallet_address']
         end
-        wn_obj = WalletName.new(wn['domain_name'], wn['name'], wallets, wn['external_id'], wn['id'])
+        wn_obj = WalletName.new(wn['domain_name'], wn['name'], wallets, external_id: wn['external_id'], id: wn['id'])
         wn_obj.set_api_opts(@api_url, @partner_id, @api_key)
         wn_list.push(wn_obj)
       end
