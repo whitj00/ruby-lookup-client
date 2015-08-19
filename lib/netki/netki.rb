@@ -156,7 +156,7 @@ module Netki
       }
 
       wn_api_data = {}
-      wn_api_data['wallet_names'] = [wn_data,]
+      wn_api_data['wallet_names'] = [wn_data]
 
       if @id
         wn_data['id'] = @id
@@ -167,7 +167,9 @@ module Netki
 
       unless @id
         response['wallet_names'].each do |wn|
-          if response['success'] && wn['domain_name'] == @domain_name && wn['name'] == @name
+          if (response['success'] &&
+              wn['domain_name'] == @domain_name &&
+              wn['name'] == @name)
             @id = wn['id']
           else
             raise 'Success, but invalid response received!'
@@ -182,7 +184,7 @@ module Netki
       raise 'Unable to Delete Object that Does Not Exist Remotely' unless @id
 
       wn_api_data = {
-          wallet_names: [{domain_name: @domain_name, id: @id}]
+          wallet_names: [ { domain_name: @domain_name, id: @id } ]
       }
 
       Netki.process_request(@api_key, @partner_id, "#{@api_url}/v1/partner/walletname", 'DELETE', JSON.dump(wn_api_data))
@@ -266,7 +268,6 @@ module Netki
     # Returns a list of Hashes, each containing current status for each domain
     #
     def get_domain_status(domain_name=nil)
-
       uri="#{@api_url}/v1/partner/domain"
       uri << "/#{domain_name}" unless domain_name.nil?
 
