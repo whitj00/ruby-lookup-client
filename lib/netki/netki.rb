@@ -117,7 +117,7 @@ module Netki
 
     # Set the address or URI for the given currency for this wallet name
     def set_currency_address(currency, address)
-      @wallets[currency][:address] = address
+      @wallets[currency] = { address: address }
     end
 
     # Remove a used currency from this wallet name
