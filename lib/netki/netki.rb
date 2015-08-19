@@ -272,7 +272,7 @@ module Netki
       uri << "/#{domain_name}" unless domain_name.nil?
 
       response = Netki.process_request(@api_key, @partner_id, uri, method='GET')
-      response['domains']
+      response['domains'] || response
     end
 
     ##
