@@ -1,3 +1,5 @@
+![Rubygem](https://img.shields.io/gem/dv/netki/stable.svg)
+
 # Ruby Netki Partner API Client
 
 This Ruby gem provides a client for [Netki's](https://netki.com) Partner API.
