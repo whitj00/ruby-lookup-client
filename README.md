@@ -1,4 +1,5 @@
-![Rubygem](https://img.shields.io/gem/dv/netki/stable.svg)
+[![Gem Version](https://badge.fury.io/rb/netki-tether.svg)](http://badge.fury.io/rb/netki-tether)
+
 
 # Ruby Netki Public Lookup API Client
 
