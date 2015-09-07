@@ -2,7 +2,6 @@ require 'rubygems'
 require 'bundler/setup'
 require 'httpclient'
 require 'json'
-require_relative 'utilities'
 
 module Netki
 
@@ -39,20 +38,6 @@ module Netki
     rescue JSON::ParserError => e
       raise "Invalid JSON Response Received"
     end
-
-    # Process Error
-    if response.code >= 300 || !ret_data['success']
-      err = ret_data['message']
-      if ret_data.has_key? 'failures'
-        fails = []
-        ret_data['failures'].each do |f|
-          fails.push(f['message'])
-        end
-        err = err + "[FAILURES: " + fails.join(", ") + "]"
-      end
-      raise err
-    end
-
     return ret_data
   end
 

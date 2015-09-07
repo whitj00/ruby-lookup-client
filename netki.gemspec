@@ -1,11 +1,10 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'netki/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "netki-tether"
-  spec.version       = Netki::VERSION
+  spec.version       = "0.0.4"
   spec.licenses      = ['BSD-3-Clause']
   spec.authors       = ["Matt David", "Whit Jackson"]
   spec.email         = ["opensource@netki.com"]
