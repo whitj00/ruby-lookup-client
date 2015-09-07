@@ -6,10 +6,7 @@ require 'json'
 module Netki
 
   # Request Utility Functionality
-  def self.process_request(api_key, partner_id, uri, method, bodyData=nil)
-
-    raise "Invalid HTTP Method" unless ['GET','POST','PUT','DELETE'].include? method
-
+  def self.process_request(uri)
     # Setup Headers
     headers = {}
     headers["Content-Type"] = "application/json"
@@ -17,14 +14,11 @@ module Netki
     # Setup Request Options
     opts = {}
     opts[:header] = headers
-    opts[:body] = bodyData if bodyData
+    method = 'GET'
 
     client = HTTPClient.new
     _uri = URI.parse(uri)
     response = client.request(method, _uri, opts)
-
-    # Short Circuit Return if 204 Response on DELETE
-    return {} if response.code == 204 && method == "DELETE"
 
     # We should have response content at this point
     raise "Empty Response Received" if response.content.nil? || response.content.empty?
@@ -41,12 +35,11 @@ module Netki
     return ret_data
   end
 
-  # Obtain a WalletName object by querying the Netki Open API.
+  # Query the Netki Open API for an address
   def self.wallet_lookup(uri, currency, api_url='https://api.netki.com')
     wallet_name = URI.parse(uri).host || uri.to_s
 
-    response = process_request(nil, nil,
-      "#{api_url}/api/wallet_lookup/#{wallet_name}/#{currency.downcase}", 'GET')
+    response = process_request("#{api_url}/api/wallet_lookup/#{wallet_name}/#{currency.downcase}", 'GET')
     
     netki_address = response['wallet_address']
     
