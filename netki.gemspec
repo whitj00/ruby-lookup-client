@@ -4,15 +4,15 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'netki/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "netki"
+  spec.name          = "netki-tether"
   spec.version       = Netki::VERSION
   spec.licenses      = ['BSD-3-Clause']
-  spec.authors       = ["Matt David"]
+  spec.authors       = ["Matt David", "Whit Jackson"]
   spec.email         = ["opensource@netki.com"]
 
-  spec.summary       = %q{Netki Partner API}
-  spec.description   = %q{Netki module that provides access to the Netki Wallet Name Partner API}
-  spec.homepage      = "https://github.com/netkicorp/ruby-partner-client"
+  spec.summary       = %q{Netki Simple Lookup API}
+  spec.description   = %q{Netki module that provides access to the Netki Lookup API}
+  spec.homepage      = "https://github.com/whitj00/ruby-lookup-client"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
@@ -20,7 +20,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "httpclient", "~> 2.6"
-
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "test-unit", "~> 3.1"
