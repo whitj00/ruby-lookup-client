@@ -11,3 +11,10 @@ end
 desc "Run tests"
 task :default => :test
 =end
+
+task :working do
+  puts "It works"
+end
+
+task :default => :working
+
