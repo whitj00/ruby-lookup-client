@@ -6,8 +6,8 @@ Gem::Specification.new do |spec|
   spec.name          = "netki-tether"
   spec.version       = "0.0.6"
   spec.licenses      = ['BSD-3-Clause']
-  spec.authors       = ["Matt David", "Whit Jackson"]
-  spec.email         = ["opensource@netki.com"]
+  spec.authors       = ['Whit Jackson', 'Matt David']
+  spec.email         = ['whit@whitjack.me', 'opensource@netki.com']
 
   spec.summary       = %q{Netki Public Lookup API}
   spec.description   = %q{Netki module that provides access to the Netki Lookup API}
