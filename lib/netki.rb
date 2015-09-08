@@ -43,7 +43,7 @@ module Netki
 
     netki_address = response['wallet_address']
 
-    unless netki_address.nil? || netki_address == 0
+    if !netki_address.nil? && netki_address != 0
       return netki_address
     else
       return false, "No Address Found"
