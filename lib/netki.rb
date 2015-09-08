@@ -3,6 +3,7 @@ require 'bundler/setup'
 require 'httpclient'
 require 'json'
 
+# Responsible for all classes in the Netki-Tether gem
 module Netki
 
   # Request Utility Functionality
