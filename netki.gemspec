@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Matt David", "Whit Jackson"]
   spec.email         = ["opensource@netki.com"]
 
-  spec.summary       = %q{Netki Simple Lookup API}
+  spec.summary       = %q{Netki Public Lookup API}
   spec.description   = %q{Netki module that provides access to the Netki Lookup API}
   spec.homepage      = "https://github.com/whitj00/ruby-lookup-client"
 
