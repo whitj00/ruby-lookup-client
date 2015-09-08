@@ -1,4 +1,11 @@
 language: ruby
 rvm:
-  - 2.0.0
+- 2.0.0
 before_install: gem install bundler -v 1.10.3
+deploy:
+  provider: rubygems
+  api_key:
+    secure: p7x18WriPYOtrFWjiy+6qmP2ZTZv9EpBa96DUyTKDY1DgaslCsyaKLPoSCPHDiHVcTBINfLUc3fWEty5ZQl9E41OSrcuCpUem7twOXnHN67bz7PZ2KAG2xMIz4nVWKW/JqoXC/vWGPFnt42xsylS03AQUzq2TQmLjWJl3dsJeJXkcHu8CgZRCNvoF6/rYcp+eTE5jXSB6I4/EGzEU2pEjs59A/Ps0VC/skthecCPVBZE4+1icT6uCTWfTGe2sWupnYmZFQpnQTW4A5WXU4PFJFI9IJ8ivO+xkMcZlLZTkckODaTTwgvRfHSZ6KDvet0WSBure40XlS4sSr3BxcrDQE7U0AFlGWOMxxuEhqd/89KQ/jw5bslu3JByLxOwhkFPmKlT9AAkvaY5er8B1dFjSaXPknm8Niu5ApI4zf+yu8lckhEKwNqKPiksL53XURhHjwEcBU3HPJcHvuON7Iw3r8CY86VUHg7dYXCC1GxAdqn9AIhmJN2+c3RNRpuyGXJWDm90GY54rxNY3WeeF2UZ3OR1I0doib2UH4JFgFyQXN2tCQ3F2XkOYV89ARzXEWf4+Ga0bSqUpNVpy5rWxc4nnXxyggjm5PMI77s6I2dr5hvIiAXoBlPL6/70NjmBMsOm0zmhUV2bCyysbQjHwzfXDDTUiZO1vM01wn+PJrThUAY=
+  gem: netki-tether
+  on:
+    repo: whitj00/ruby-lookup-client
