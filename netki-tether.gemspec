@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "netki-tether"
-  spec.version       = "0.0.6"
+  spec.version       = "0.0.7"
   spec.licenses      = ['BSD-3-Clause']
   spec.authors       = ['Whit Jackson', 'Matt David']
   spec.email         = ['whit@whitjack.me', 'opensource@netki.com']
