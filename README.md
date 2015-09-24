@@ -12,7 +12,7 @@ This is forked from [Netki's Partner API Client](https://github.com/netkicorp/ru
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'netki', :git => 'https://github.com/whitj00/ruby-lookup-client.git'
+gem 'netki', :source => 'https://repo.fury.io/whitj00/'
 ```
 
 And then execute:
@@ -21,7 +21,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install netki-tether
+    $ gem install netki --source https://repo.fury.io/whitj00/
 
 ## Usage
 
